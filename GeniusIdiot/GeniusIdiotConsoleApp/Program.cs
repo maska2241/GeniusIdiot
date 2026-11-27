@@ -1,14 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 public class MainClass
 {
     public static void Main()
     {
         Console.WriteLine("Введите свое имя: ");
-        int countStep = 5;
         string name = Console.ReadLine();
+        string pathTest = "../../../data/test.txt";
+        string pathResults = "../../../data/result.txt";
+        File.AppendAllText(pathTest, "");
         while (true)
         {
+            List<string> list = new List<string>;
+            if (File.Exists(pathTest))
+            {
+                AddQuestion(pathTest);
+            }
+            File.ReadAllLines("")
             int countCorrectAnswer = AskQuestion(countStep);
             GettingResults(countCorrectAnswer, name);
             Console.WriteLine("Хотите сыграть ещё раз (Да / Нет):");
@@ -19,14 +29,33 @@ public class MainClass
 
         }
 
-
+        
     }
 
+    static void AddQuestion(string path)
+    {
+        Console.WriteLine("Введите количество добавляемых вопросов: ");
+        int countQuestions = int.Parse(Console.ReadLine());
+
+        Console.WriteLine("Добавьте вопросы и правильные ответы на них (1 вопрос - 1 ответ): ");
+        List<string> question = new List<string>();
+        List<string> answers = new List<string>();
+
+        for (int i = 0; i < countQuestions; i++)
+        {
+            string[] q = Console.ReadLine().Split();
+            question.Add(q[0]);
+            answers.Add(q[1]);
+        }
+
+        File.AppendAllText(path, Convert.ToString(countQuestions));
+        File.AppendAllLines(path, question);
+        File.AppendAllLines(path, answers);
+
+    }
     static int AskQuestion(int countStep)
     {
-        string[] questionBank = { "1. Сколько будет 2 плюс 2, умноженное на 2?", "2. Бревно нужно распилить на 10 частей. Сколько надо сделать распилов?",
-            "3. На двух руках 10 пальцев. Сколько пальцев на 5 руках?", "4. Укол делают каждые полчаса. Сколько нужно минут для трех уколов?", "5. 5 свечей горело, 2 потухли. Сколько свечей осталось?" };
-        string[] answerBank = { "6", "9", "25", "60", "2" };
+        
         int[] bank = new int[questionBank.Length];
         for (int i = 0; i < bank.Length; i++)
         {
